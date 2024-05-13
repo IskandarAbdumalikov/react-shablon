@@ -7,14 +7,7 @@ header {
   display: flex;
   align-items: center;
   z-index: 9999;
-  #dark {
-    background: black !important;
-    color: white !important;
-  }
-  #light {
-    background: white !important;
-    color: black !important;
-  }
+  background: white;
 }
 
 .show__header-shrink {
@@ -119,18 +112,14 @@ header {
   }
 }
 
-#dark {
-  header,
-  .show__header-shrink {
-    background: black !important;
-    color: white !important;
-  }
+
+.active {
+  color: red;
+  text-decoration: underline;
 }
 
-#light {
-  header,
-  .show__header-shrink {
-    background: white !important;
-    color: black !important;
-  }
+
+.nav__logo a{
+  color: black !important;
+  text-decoration: none;
 }

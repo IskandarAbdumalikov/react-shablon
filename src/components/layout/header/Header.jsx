@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./header.scss";
 import { FaBars } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
+import Module from "../../module";
 
-const Header = () => {
+const Header = ({ logoTitle }) => {
   const [shrink, setShrink] = useState(false);
   const [closeNavList, setCloseNavList] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
-
-  const handleDarkModeToggle = () => {
-    setDarkMode(!darkMode);
-  };
+  const [module, setModule] = useState(false);
 
   const handleOpneNavList = () => {
     setCloseNavList(true);
@@ -18,6 +16,7 @@ const Header = () => {
 
   const handleCloseNavList = () => {
     setCloseNavList(false);
+    setModule(false);
   };
 
   useEffect(() => {
@@ -40,44 +39,32 @@ const Header = () => {
       : (document.body.style.overflow = "auto");
   }
 
-  {
-    darkMode
-      ? (document.body.style.backgroundColor = "black")
-      : (document.body.style.backgroundColor = "white");
-  }
-
-  {
-    darkMode
-      ? (document.body.style.color = "white")
-      : (document.body.style.color = "black");
-  }
   return (
-    <header
-      id={darkMode ? "dark" : "light"}
-      className={shrink ? " show__header-shrink" : ""}
-    >
+    <header className={shrink ? " show__header-shrink" : ""}>
       <nav className="container header__nav">
         <div
           onClick={handleCloseNavList}
           className={
-            closeNavList ? "nav__overlay show__nav-overlay" : "nav__overlay"
+            closeNavList || module
+              ? "nav__overlay show__nav-overlay"
+              : "nav__overlay"
           }
         ></div>
         <div className="nav__logo">
-          <a href="#">LOGO</a>
+          <NavLink to={"/"}>{logoTitle}</NavLink>
         </div>
         <ul className={closeNavList ? "nav__list show__nav-list" : "nav__list"}>
           <li>
-            <a href="#">Home</a>
+            <NavLink to={"/"}>Home</NavLink>
           </li>
           <li>
-            <a href="#">Shop all</a>
+            <NavLink to={"/shopping"}>Shop all</NavLink>
           </li>
           <li>
-            <a href="#">Blog</a>
+            <NavLink to={"/blog"}>Blog</NavLink>
           </li>
           <li>
-            <a href="#">About US</a>
+            <NavLink to={"/about"}>About US</NavLink>
           </li>
 
           <h1 className="nav__list-closer" onClick={handleCloseNavList}>
@@ -85,14 +72,13 @@ const Header = () => {
           </h1>
         </ul>
         <div className="nav__btns">
-          <button onClick={handleDarkModeToggle}>
-            {darkMode ? "Light Mode" : "Dark Mode"}
-          </button>
+          <button onClick={() => setModule(true)}>Open module</button>
           <button>Sign in</button>
           <button>Sign up</button>
           <FaBars onClick={handleOpneNavList} className="nav__bar" />
         </div>
       </nav>
+      {module ? <Module closeFunc={setModule} /> : <></>}
     </header>
   );
 };

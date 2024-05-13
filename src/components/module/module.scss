@@ -1,0 +1,22 @@
+.module {
+  width: 500px;
+  height: 700px;
+  background: white;
+  border-radius: 20px;
+  color: black;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+.module__closer{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: red;
+    cursor: pointer;
+}
