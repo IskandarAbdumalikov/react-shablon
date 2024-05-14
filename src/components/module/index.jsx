@@ -7,7 +7,9 @@ const Module = ({ closeFunc }) => {
       <h1 onClick={()=>closeFunc(false)} className="module__closer">
         X
       </h1>
-      <h2>Hello module</h2>
+      <form action="">
+        
+      </form>
     </div>
   );
 };

@@ -38,6 +38,11 @@ const Header = ({ logoTitle }) => {
       ? (document.body.style.overflow = "hidden")
       : (document.body.style.overflow = "auto");
   }
+  {
+    module
+      ? (document.body.style.overflow = "hidden")
+      : (document.body.style.overflow = "auto");
+  }
 
   return (
     <header className={shrink ? " show__header-shrink" : ""}>
@@ -72,9 +77,19 @@ const Header = ({ logoTitle }) => {
           </h1>
         </ul>
         <div className="nav__btns">
-          <button onClick={() => setModule(true)}>Open module</button>
-          <button>Sign in</button>
-          <button>Sign up</button>
+          <button onClick={() => setModule(true)}>Add Teacher</button>
+          {/* <button>Sign in</button>
+          <button>Sign up</button> */}
+          <select name="" id="">
+            <option value="all">All</option>
+            <option value="married">Married</option>
+            <option value="single">Single</option>
+          </select>
+          <select name="" id="">
+            <option value="all">Order</option>
+            <option value="alphabet">Alphabet</option>
+            <option value="reverse">Reverse</option>
+          </select>
           <FaBars onClick={handleOpneNavList} className="nav__bar" />
         </div>
       </nav>

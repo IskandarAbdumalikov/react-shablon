@@ -4,7 +4,8 @@ import "./students.scss";
 
 const Students = () => {
   return (
-    <div>Students</div>
+    <div
+    className='container'>Students</div>
   )
 }
 

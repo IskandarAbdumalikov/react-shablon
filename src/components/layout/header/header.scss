@@ -30,6 +30,11 @@ header {
   display: flex;
   align-items: center;
   gap: 20px;
+  select {
+    padding: 10px 20px;
+    border: 1px solid black;
+    border-radius: 10px;
+  }
 }
 
 .nav__form {
@@ -112,14 +117,31 @@ header {
   }
 }
 
-
 .active {
   color: red;
   text-decoration: underline;
 }
 
-
-.nav__logo a{
+.nav__logo a {
   color: black !important;
   text-decoration: none;
+}
+
+@media (max-width:700px) {
+  .nav__btns{
+    position: fixed;
+    top: 100px;
+    left: 0;
+    background: white;
+    width: 100%;
+    padding: 10px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav__logo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
