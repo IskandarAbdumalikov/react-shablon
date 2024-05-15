@@ -57,3 +57,21 @@
     padding-top: 80px;
   }
 }
+.teachers__pagination{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: center;
+  .btn{
+    background: transparent;
+    color: black;
+  }
+  .active{
+    background-color: blue;
+    color: white;
+  }
+  .disabled{
+    background: red;
+    cursor: no-drop;
+  }
+}

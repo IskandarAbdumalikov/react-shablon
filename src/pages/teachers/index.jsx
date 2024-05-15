@@ -6,7 +6,7 @@ const Teacher = () => {
   let [data, setData] = useState([]);
   let [page, setPage] = useState(1);
   const [teachersCount, setTeachersCount] = useState(0);
-  const LIMIT = 6;
+  const LIMIT = 3;
   console.log(data);
   useEffect(() => {
     getTeachers();
@@ -32,10 +32,14 @@ const Teacher = () => {
   }
   function getPages() {
     let res = [];
-    for (let i = 0; i < teachersCount / 6; i++) {
+    for (let i = 1; i < teachersCount / LIMIT + 1; i++) {
       res.push(
-        <button key={i} onClick={() => setPage(i + 1)}>
-          {i+1}
+        <button
+          className={i === page ? "active" : "btn"}
+          key={i}
+          onClick={() => setPage(i)}
+        >
+          {i}
         </button>
       );
     }
@@ -65,6 +69,7 @@ const Teacher = () => {
       {teacherItems}
       <div className="teachers__pagination">
         <button
+          className={page === 1 ? "disabled" : ""}
           disabled={page === 1 ? true : false}
           onClick={() => setPage((e) => --e)}
         >
@@ -72,7 +77,10 @@ const Teacher = () => {
         </button>
         {getPages()}
         <button
-          disabled={page === Math.ceil(teachersCount / 6) ? true : false}
+          className={
+            page === Math.ceil(teachersCount / LIMIT) ? "disabled" : ""
+          }
+          disabled={page === Math.ceil(teachersCount / LIMIT) ? true : false}
           onClick={() => setPage((e) => ++e)}
         >
           next
