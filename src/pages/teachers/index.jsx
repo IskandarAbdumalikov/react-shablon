@@ -16,7 +16,7 @@ const Teacher = () => {
   function getTeachers() {
     axios
       .get(
-        `https://664459ac6c6a6565870a02a2.mockapi.io/schoole/teachers?limit=${LIMIT}&page=${page}`
+        `https://6490bc9e1e6aa71680cbb786.mockapi.io/TeachersInfo/teacher?limit=${LIMIT}&page=${page}`
       )
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
@@ -24,7 +24,7 @@ const Teacher = () => {
 
   function getTeachersCount() {
     axios
-      .get(`https://664459ac6c6a6565870a02a2.mockapi.io/schoole/teachers`)
+      .get(`https://6490bc9e1e6aa71680cbb786.mockapi.io/TeachersInfo/teacher`)
       .then((res) => setTeachersCount(res.data?.length))
       .catch((err) => console.log(err));
   }
@@ -33,7 +33,7 @@ const Teacher = () => {
     if (confirm("are you sure")) {
       axios
         .delete(
-          `https://664459ac6c6a6565870a02a2.mockapi.io/schoole/teachers/${id}`
+          `https://6490bc9e1e6aa71680cbb786.mockapi.io/TeachersInfo/teacher/${id}`
         )
         .then(() => {
           setData(data.filter((teacher) => teacher.id !== id));
