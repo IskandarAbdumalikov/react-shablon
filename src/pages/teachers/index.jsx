@@ -3,8 +3,8 @@ import "./teachers.scss";
 import axios from "axios";
 
 const Teacher = () => {
-  let [data, setData] = useState(null);
-  let [page, setPage] = useState(0);
+  let [data, setData] = useState([]);
+  let [page, setPage] = useState(1);
   const [teachersCount, setTeachersCount] = useState(0);
   const LIMIT = 6;
   console.log(data);
@@ -33,7 +33,11 @@ const Teacher = () => {
   function getPages() {
     let res = [];
     for (let i = 0; i < teachersCount / 6; i++) {
-      res.push(<button onClick={() => setPage(i+1)}>{i+1}</button>);
+      res.push(
+        <button key={i} onClick={() => setPage(i + 1)}>
+          {i+1}
+        </button>
+      );
     }
     return res;
   }
@@ -60,9 +64,19 @@ const Teacher = () => {
     <div className="container user__wrapper">
       {teacherItems}
       <div className="teachers__pagination">
-        <button onClick={() => setPage((e) => --e)}>prev</button>
+        <button
+          disabled={page === 1 ? true : false}
+          onClick={() => setPage((e) => --e)}
+        >
+          prev
+        </button>
         {getPages()}
-        <button onClick={() => setPage((e) =>++e)}>next</button>
+        <button
+          disabled={page === Math.ceil(teachersCount / 6) ? true : false}
+          onClick={() => setPage((e) => ++e)}
+        >
+          next
+        </button>
       </div>
     </div>
   );
