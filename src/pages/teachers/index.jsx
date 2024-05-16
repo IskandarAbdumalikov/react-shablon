@@ -15,25 +15,29 @@ let initialState = {
     "https://t3.ftcdn.net/jpg/02/68/64/28/360_F_268642811_GZ1DZLoeqG9v5Sp7XRfZteGm0BbdHSKN.jpg",
 };
 
-
 const Teacher = () => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [teachersCount, setTeachersCount] = useState(0);
   const [newTeacher, setNewTeacher] = useState(initialState);
+  const [maritalStatus, setMaritalStatus] = useState("all");
   const LIMIT = 3;
 
   useEffect(() => {
     getTeachers();
     getTeachersCount();
-  }, [page]);
+  }, [page, maritalStatus]);
 
   function getTeachers() {
+    let apiUrl = `https://6645a471b8925626f892813d.mockapi.io/school/teachers?limit=${LIMIT}&page=${page}`;
+
+    if (maritalStatus !== "all") {
+      apiUrl += `&isMarried=${maritalStatus === "married" ? "true" : "false"}`;
+    }
+
     axios
-      .get(
-        `https://6645a471b8925626f892813d.mockapi.io/school/teachers?limit=${LIMIT}&page=${page}`
-      )
+      .get(apiUrl)
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
   }
@@ -114,6 +118,17 @@ const Teacher = () => {
     <div className="teachers">
       <div className="teachers__header  container">
         <div className="teachers__logo">LOGO</div>
+        <select
+        className="teachers__filter__select"
+          name=""
+          id=""
+          value={maritalStatus}
+          onChange={(e) => setMaritalStatus(e.target.value)}
+        >
+          <option value="all">All</option>
+          <option value="single">Single</option>
+          <option value="married">Married</option>
+        </select>
         <div className="teachers__header__btns">
           <button onClick={() => setShowModal(true)}>Add teacher</button>
         </div>

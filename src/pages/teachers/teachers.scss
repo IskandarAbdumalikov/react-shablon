@@ -162,3 +162,21 @@
     }
   }
 }
+
+.teachers__filter__select{
+  padding: 10px;
+  border-radius: 10px;
+  option{
+    color: white;
+  }
+  option:nth-child(1){
+    background: black;
+  }
+  option:nth-child(2){
+    background: red;
+  }
+  option:nth-child(3){
+    background: green;
+  }
+}
+
