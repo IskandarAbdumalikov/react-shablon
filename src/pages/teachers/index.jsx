@@ -3,14 +3,17 @@ import "./teachers.scss";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import checkImg from "../../assets/check.svg";
+import errorImg from "../../assets/error.svg";
+import EditTeacher from "../../components/editTeacher/EditTeacher";
+
 let initialState = {
-  firstName: "Ali",
-  lastName: "Vali",
-  avatar:
-    "https://t3.ftcdn.net/jpg/02/68/64/28/360_F_268642811_GZ1DZLoeqG9v5Sp7XRfZteGm0BbdHSKN.jpg",
+  firstName: "",
+  lastName: "",
+  avatar: "",
   isMarried: true,
-  phoneNumber: "5678",
-  email: "jklkj@jkj.com",
+  phoneNumber: "",
+  email: "",
   vedio:
     "https://t3.ftcdn.net/jpg/02/68/64/28/360_F_268642811_GZ1DZLoeqG9v5Sp7XRfZteGm0BbdHSKN.jpg",
 };
@@ -22,12 +25,16 @@ const Teacher = () => {
   const [teachersCount, setTeachersCount] = useState(0);
   const [newTeacher, setNewTeacher] = useState(initialState);
   const [maritalStatus, setMaritalStatus] = useState("all");
+  const [editData, setEditData] = useState(null);
   const LIMIT = 3;
 
   useEffect(() => {
     getTeachers();
+  }, [page, maritalStatus, editData]);
+
+  useEffect(() => {
     getTeachersCount();
-  }, [page, maritalStatus]);
+  }, [maritalStatus]);
 
   function getTeachers() {
     let apiUrl = `https://6645a471b8925626f892813d.mockapi.io/school/teachers?limit=${LIMIT}&page=${page}`;
@@ -35,16 +42,23 @@ const Teacher = () => {
     if (maritalStatus !== "all") {
       apiUrl += `&isMarried=${maritalStatus === "married" ? "true" : "false"}`;
     }
-
     axios
       .get(apiUrl)
-      .then((res) => setData(res.data))
+      .then((res) => {
+        setData(res.data);
+        getTeachersCount();
+      })
       .catch((err) => console.log(err));
   }
 
   function getTeachersCount() {
+    let apiUrl = `https://6645a471b8925626f892813d.mockapi.io/school/teachers`;
+
+    if (maritalStatus !== "all") {
+      apiUrl += `?isMarried=${maritalStatus === "married" ? "true" : "false"}`;
+    }
     axios
-      .get(`https://6645a471b8925626f892813d.mockapi.io/school/teachers`)
+      .get(apiUrl)
       .then((res) => setTeachersCount(res.data?.length))
       .catch((err) => console.log(err));
   }
@@ -57,6 +71,8 @@ const Teacher = () => {
         )
         .then(() => {
           getTeachers();
+          getTeachersCount();
+          alert("deleted");
         })
         .catch((err) => console.log(err));
     }
@@ -88,6 +104,7 @@ const Teacher = () => {
         setNewTeacher(initialState);
         console.log(res);
         setShowModal(false);
+        getTeachersCount();
       })
       .catch((err) => console.log(err));
   };
@@ -103,9 +120,19 @@ const Teacher = () => {
         </h1>
         <h3>Email : {card.email}</h3>
         <h3>Phone Number : {card.phoneNumber}</h3>
+        <h3 className="ismarried__checker">
+          isMarried :{" "}
+          {card.isMarried ? (
+            <img width={20} src={checkImg} alt="" />
+          ) : (
+            <img width={20} src={errorImg} alt="" />
+          )}
+        </h3>
         <div className="teacher__card__btns">
-          <button>View Students</button>
-          <button className="edit-btn">Edit</button>
+          {/* <button>View Students</button> */}
+          <button onClick={() => setEditData(card)} className="edit-btn">
+            Edit
+          </button>
           <button className="delete-btn" onClick={() => handleDelete(card.id)}>
             Delete
           </button>
@@ -119,7 +146,7 @@ const Teacher = () => {
       <div className="teachers__header  container">
         <div className="teachers__logo">LOGO</div>
         <select
-        className="teachers__filter__select"
+          className="teachers__filter__select"
           name=""
           id=""
           value={maritalStatus}
@@ -237,16 +264,47 @@ const Teacher = () => {
             <div className="isMarried">
               <div className="married">
                 <label htmlFor="">Married</label>
-                <input type="radio" name="" id="" />
+                <input
+                  onChange={(e) =>
+                    setNewTeacher((prev) => ({
+                      ...prev,
+                      isMarried: e.target.value,
+                    }))
+                  }
+                  value={newTeacher.isMarried}
+                  type="radio"
+                  name="gender"
+                  id=""
+                />
               </div>
               <div className="single">
                 <label htmlFor="">Single</label>
-                <input type="radio" name="" id="" />
+                <input
+                  onChange={(e) =>
+                    setNewTeacher((prev) => ({
+                      ...prev,
+                      isMarried: e.target.value,
+                    }))
+                  }
+                  value={newTeacher.isMarried}
+                  type="radio"
+                  name="gender"
+                  id=""
+                />
               </div>
             </div>
             <button type="submit">Create</button>
           </form>
         </div>
+      ) : (
+        <></>
+      )}
+      {editData ? (
+        <EditTeacher
+          setMaritalStatus={setMaritalStatus}
+          data={editData}
+          setEditData={setEditData}
+        />
       ) : (
         <></>
       )}
