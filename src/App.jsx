@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import Header from "./components/layout/header/Header";
 import Footer from "./components/layout/footer/Footer";
 import { Route, Routes } from "react-router-dom";
@@ -15,9 +15,8 @@ function App() {
     <Fragment>
       <Header logoTitle="Teachers" />
       <Routes>
-        <Route path="/" element={<Teacher />}>
-          <Route path="singlePage" element={<SinglePage />} />
-        </Route>
+        <Route path="/" element={<Teacher />} />
+        <Route path="teachers/:id" element={<SinglePage />} />
         <Route path="/students" element={<Students />} />
         <Route path="/shopping" element={<Shopping />} />
         <Route path="/about" element={<About />} />

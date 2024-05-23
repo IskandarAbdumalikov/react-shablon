@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
 import "./teachers.scss";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
 import checkImg from "../../assets/check.svg";
 import errorImg from "../../assets/error.svg";
 import EditTeacher from "../../components/editTeacher/EditTeacher";
+import { useState, useEffect } from "react";
 
 let initialState = {
   firstName: "",
@@ -26,11 +25,13 @@ const Teacher = () => {
   const [newTeacher, setNewTeacher] = useState(initialState);
   const [maritalStatus, setMaritalStatus] = useState("all");
   const [editData, setEditData] = useState(null);
+  const [searchValue, setSearchValue] = useState("");
+  console.log(searchValue);
   const LIMIT = 3;
 
   useEffect(() => {
     getTeachers();
-  }, [page, maritalStatus, editData]);
+  }, [page, maritalStatus, editData, searchValue]);
 
   useEffect(() => {
     getTeachersCount();
@@ -42,6 +43,11 @@ const Teacher = () => {
     if (maritalStatus !== "all") {
       apiUrl += `&isMarried=${maritalStatus === "married" ? "true" : "false"}`;
     }
+
+    if (searchValue) {
+      apiUrl += `&search=${searchValue}`;
+    }
+
     axios
       .get(apiUrl)
       .then((res) => {
@@ -57,6 +63,7 @@ const Teacher = () => {
     if (maritalStatus !== "all") {
       apiUrl += `?isMarried=${maritalStatus === "married" ? "true" : "false"}`;
     }
+
     axios
       .get(apiUrl)
       .then((res) => setTeachersCount(res.data?.length))
@@ -64,7 +71,7 @@ const Teacher = () => {
   }
 
   const handleDelete = (id) => {
-    if (confirm("are you sure")) {
+    if (confirm("Are you sure?")) {
       axios
         .delete(
           `https://6645a471b8925626f892813d.mockapi.io/school/teachers/${id}`
@@ -72,7 +79,7 @@ const Teacher = () => {
         .then(() => {
           getTeachers();
           getTeachersCount();
-          alert("deleted");
+          alert("Deleted");
         })
         .catch((err) => console.log(err));
     }
@@ -93,6 +100,7 @@ const Teacher = () => {
     }
     return res;
   }
+
   const handleCreate = (e) => {
     e.preventDefault();
     axios
@@ -102,16 +110,17 @@ const Teacher = () => {
       )
       .then((res) => {
         setNewTeacher(initialState);
-        console.log(res);
         setShowModal(false);
+        getTeachers();
         getTeachersCount();
+        console.log(res);
       })
       .catch((err) => console.log(err));
   };
 
   let teacherItems = data?.map((card) => (
     <div key={card.id} className="teacher__card">
-      <Link className="teacher__card__img" to={"/singlePage"}>
+      <Link className="teacher__card__img" to={`/teachers/${card.id}`}>
         <img src={card.avatar} alt="" />
       </Link>
       <div className="teacher__card__info">
@@ -129,7 +138,6 @@ const Teacher = () => {
           )}
         </h3>
         <div className="teacher__card__btns">
-          {/* <button>View Students</button> */}
           <button onClick={() => setEditData(card)} className="edit-btn">
             Edit
           </button>
@@ -143,12 +151,10 @@ const Teacher = () => {
 
   return (
     <div className="teachers">
-      <div className="teachers__header  container">
+      <div className="teachers__header container">
         <div className="teachers__logo">LOGO</div>
         <select
           className="teachers__filter__select"
-          name=""
-          id=""
           value={maritalStatus}
           onChange={(e) => setMaritalStatus(e.target.value)}
         >
@@ -156,6 +162,21 @@ const Teacher = () => {
           <option value="single">Single</option>
           <option value="married">Married</option>
         </select>
+        <form
+          className="search__teacher"
+          onSubmit={(e) => {
+            e.preventDefault();
+            getTeachers();
+          }}
+        >
+          <input
+            placeholder="Search..."
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            type="text"
+          />
+          <button type="submit">Search</button>
+        </form>
         <div className="teachers__header__btns">
           <button onClick={() => setShowModal(true)}>Add teacher</button>
         </div>
@@ -167,7 +188,7 @@ const Teacher = () => {
           disabled={page === 1}
           onClick={() => setPage((prevPage) => prevPage - 1)}
         >
-          prev
+          Prev
         </button>
         {getPages()}
         <button
@@ -177,7 +198,7 @@ const Teacher = () => {
           disabled={page === Math.ceil(teachersCount / LIMIT)}
           onClick={() => setPage((prevPage) => prevPage + 1)}
         >
-          next
+          Next
         </button>
       </div>
       <div
@@ -186,7 +207,7 @@ const Teacher = () => {
           showModal ? "nav__overlay show__nav-overlay" : "nav__overlay"
         }
       ></div>
-      {showModal ? (
+      {showModal && (
         <div className="teacher__modal">
           <h1
             className="teacher__modal__closer"
@@ -194,7 +215,7 @@ const Teacher = () => {
           >
             X
           </h1>
-          <form onSubmit={handleCreate} className="teacher__form" action="">
+          <form onSubmit={handleCreate} className="teacher__form">
             <input
               value={newTeacher.firstName}
               onChange={(e) =>
@@ -248,7 +269,7 @@ const Teacher = () => {
                 }))
               }
               placeholder="Enter email"
-              type="gmail"
+              type="email"
             />
             <input
               value={newTeacher.vedio}
@@ -263,50 +284,45 @@ const Teacher = () => {
             />
             <div className="isMarried">
               <div className="married">
-                <label htmlFor="">Married</label>
+                <label>Married</label>
                 <input
-                  onChange={(e) =>
+                  onChange={() =>
                     setNewTeacher((prev) => ({
                       ...prev,
-                      isMarried: e.target.value,
+                      isMarried: true,
                     }))
                   }
-                  value={newTeacher.isMarried}
+                  checked={newTeacher.isMarried === true}
                   type="radio"
-                  name="gender"
-                  id=""
+                  name="isMarried"
                 />
               </div>
               <div className="single">
-                <label htmlFor="">Single</label>
+                <label>Single</label>
                 <input
-                  onChange={(e) =>
+                  onChange={() =>
                     setNewTeacher((prev) => ({
                       ...prev,
-                      isMarried: e.target.value,
+                      isMarried: false,
                     }))
                   }
-                  value={newTeacher.isMarried}
+                  checked={newTeacher.isMarried === false}
                   type="radio"
-                  name="gender"
-                  id=""
+                  name="isMarried"
                 />
               </div>
             </div>
             <button type="submit">Create</button>
           </form>
         </div>
-      ) : (
-        <></>
       )}
-      {editData ? (
+      {editData && (
         <EditTeacher
           setMaritalStatus={setMaritalStatus}
           data={editData}
           setEditData={setEditData}
+          refreshData={getTeachers}
         />
-      ) : (
-        <></>
       )}
     </div>
   );

@@ -1,0 +1,62 @@
+.single__page {
+  display: flex;
+  justify-content: space-between;
+  height: 600px;
+  .teacher__image {
+    width: 45%;
+    height: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  .teacher__info {
+    width: 45%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    h1 {
+      font-size: 50px;
+    }
+    button {
+      width: 200px;
+      height: 50px;
+      border-radius: 10px;
+      color: white;
+      background: black;
+      border: 1px solid black;
+      transition: 0.4s;
+    }
+  }
+}
+
+.search__teacher{
+  display: flex;
+  align-items: center;
+  border: 1px solid black;
+  padding: 10px 15px;
+  border-radius: 10px;
+  input{
+    width: 200px;
+    height: 40px;
+    outline: none;
+    border: none;
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 900px) {
+  .single__page {
+    flex-direction: column;
+    gap: 50px;
+    padding-top: 80px;
+  }
+  .teacher__image,
+  .teacher__info {
+    width: 100% !important;
+  }
+}
