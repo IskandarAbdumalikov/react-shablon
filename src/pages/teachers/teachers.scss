@@ -2,7 +2,11 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 50px;
-  padding-top: 50px;
+  padding-top: 10px;
+}
+
+body{
+  position: relative;
 }
 
 .teachers {
@@ -12,7 +16,13 @@
   &__header {
     display: flex;
     align-items: center;
+    padding: 10px 0px;
     justify-content: space-between;
+    position: sticky;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: white;
   }
 }
 
@@ -195,4 +205,19 @@
   display: flex;
   align-items: center;
   gap: 20px;
+}
+
+.search__teacher{
+  display: flex;
+  align-items: center;
+  border: 1px solid black;
+  padding: 5px 10px;
+  border-radius: 10px;
+  input{
+    width: 200px;
+    height: 40px;
+    outline: none;
+    border: none;
+    font-size: 20px;
+  }
 }

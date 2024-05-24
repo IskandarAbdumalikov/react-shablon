@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import "./singlePages.scss";
 
 const SinglePage = () => {
@@ -30,6 +30,7 @@ const SinglePage = () => {
         <h3>{data.email}</h3>
         <h3>{data.phoneNumber}</h3>
         <button>See students</button>
+        <Link to={"/"}><button>Home</button></Link>
       </div>
     </div>
   );

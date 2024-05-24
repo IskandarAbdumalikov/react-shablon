@@ -35,7 +35,7 @@ const Teacher = () => {
 
   useEffect(() => {
     getTeachersCount();
-  }, [maritalStatus]);
+  }, [maritalStatus, searchValue]);
 
   function getTeachers() {
     let apiUrl = `https://6645a471b8925626f892813d.mockapi.io/school/teachers?limit=${LIMIT}&page=${page}`;
@@ -62,6 +62,11 @@ const Teacher = () => {
 
     if (maritalStatus !== "all") {
       apiUrl += `?isMarried=${maritalStatus === "married" ? "true" : "false"}`;
+      if (searchValue) {
+        apiUrl += `&search=${searchValue}`;
+      }
+    } else if (searchValue) {
+      apiUrl += `?search=${searchValue}`;
     }
 
     axios
@@ -151,34 +156,36 @@ const Teacher = () => {
 
   return (
     <div className="teachers">
-      <div className="teachers__header container">
-        <div className="teachers__logo">LOGO</div>
-        <select
-          className="teachers__filter__select"
-          value={maritalStatus}
-          onChange={(e) => setMaritalStatus(e.target.value)}
-        >
-          <option value="all">All</option>
-          <option value="single">Single</option>
-          <option value="married">Married</option>
-        </select>
-        <form
-          className="search__teacher"
-          onSubmit={(e) => {
-            e.preventDefault();
-            getTeachers();
-          }}
-        >
-          <input
-            placeholder="Search..."
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-            type="text"
-          />
-          <button type="submit">Search</button>
-        </form>
-        <div className="teachers__header__btns">
-          <button onClick={() => setShowModal(true)}>Add teacher</button>
+      <div className="teachers__header">
+        <div className="teachers__header container">
+          <div className="teachers__logo">LOGO</div>
+          <select
+            className="teachers__filter__select"
+            value={maritalStatus}
+            onChange={(e) => setMaritalStatus(e.target.value)}
+          >
+            <option value="all">All</option>
+            <option value="single">Single</option>
+            <option value="married">Married</option>
+          </select>
+          <form
+            className="search__teacher"
+            onSubmit={(e) => {
+              e.preventDefault();
+              getTeachers();
+            }}
+          >
+            <input
+              placeholder="Search..."
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              type="text"
+            />
+            <button type="submit">Search</button>
+          </form>
+          <div className="teachers__header__btns">
+            <button onClick={() => setShowModal(true)}>Add teacher</button>
+          </div>
         </div>
       </div>
       <div className="container teacher__wrapper">{teacherItems}</div>

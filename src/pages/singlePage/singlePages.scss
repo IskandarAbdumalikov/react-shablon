@@ -1,7 +1,8 @@
 .single__page {
   display: flex;
   justify-content: space-between;
-  height: 600px;
+  height: 760px;
+  padding: 80px 0px;
   .teacher__image {
     width: 45%;
     height: 100%;
@@ -34,20 +35,7 @@
   }
 }
 
-.search__teacher{
-  display: flex;
-  align-items: center;
-  border: 1px solid black;
-  padding: 10px 15px;
-  border-radius: 10px;
-  input{
-    width: 200px;
-    height: 40px;
-    outline: none;
-    border: none;
-    font-size: 20px;
-  }
-}
+
 
 @media (max-width: 900px) {
   .single__page {

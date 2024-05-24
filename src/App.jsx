@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import Header from "./components/layout/header/Header";
+// import Header from "./components/layout/header/Header";
 import Footer from "./components/layout/footer/Footer";
 import { Route, Routes } from "react-router-dom";
 import Shopping from "./pages/shopping/Shopping";
@@ -13,7 +13,7 @@ import { ToastContainer } from "react-toastify";
 function App() {
   return (
     <Fragment>
-      <Header logoTitle="Teachers" />
+      {/* <Header logoTitle="Teachers" /> */}
       <Routes>
         <Route path="/" element={<Teacher />} />
         <Route path="teachers/:id" element={<SinglePage />} />
