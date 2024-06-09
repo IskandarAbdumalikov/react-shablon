@@ -5,6 +5,7 @@ import checkImg from "../../assets/check.svg";
 import errorImg from "../../assets/error.svg";
 import EditTeacher from "../../components/editTeacher/EditTeacher";
 import { useState, useEffect } from "react";
+import { PatternFormat } from "react-number-format";
 
 let initialState = {
   firstName: "",
@@ -25,13 +26,14 @@ const Teacher = () => {
   const [newTeacher, setNewTeacher] = useState(initialState);
   const [maritalStatus, setMaritalStatus] = useState("all");
   const [editData, setEditData] = useState(null);
+  const [sortValue, setSortValue] = useState("asc");
   const [searchValue, setSearchValue] = useState("");
-  console.log(searchValue);
   const LIMIT = 3;
+  console.log(sortValue);
 
   useEffect(() => {
     getTeachers();
-  }, [page, maritalStatus, editData, searchValue]);
+  }, [page, maritalStatus, editData, searchValue, sortValue]);
 
   useEffect(() => {
     getTeachersCount();
@@ -46,6 +48,9 @@ const Teacher = () => {
 
     if (searchValue) {
       apiUrl += `&search=${searchValue}`;
+      setPage(1);
+    } else {
+      apiUrl += `&sortBy=firstName&order=${sortValue}`;
     }
 
     axios
@@ -64,9 +69,14 @@ const Teacher = () => {
       apiUrl += `?isMarried=${maritalStatus === "married" ? "true" : "false"}`;
       if (searchValue) {
         apiUrl += `&search=${searchValue}`;
+        setPage(1);
+      }
+      if (sortValue) {
+        apiUrl += `&order=${sortValue}&sortBy=firstName`;
       }
     } else if (searchValue) {
       apiUrl += `?search=${searchValue}`;
+      setPage(1);
     }
 
     axios
@@ -146,6 +156,9 @@ const Teacher = () => {
           <button onClick={() => setEditData(card)} className="edit-btn">
             Edit
           </button>
+          <Link className="edit-btn" to={`/teachers/${card.id}/students`}>
+            See students
+          </Link>
           <button className="delete-btn" onClick={() => handleDelete(card.id)}>
             Delete
           </button>
@@ -162,11 +175,27 @@ const Teacher = () => {
           <select
             className="teachers__filter__select"
             value={maritalStatus}
-            onChange={(e) => setMaritalStatus(e.target.value)}
+            onChange={(e) => {
+              setSearchValue("");
+              setMaritalStatus(e.target.value);
+            }}
           >
             <option value="all">All</option>
             <option value="single">Single</option>
             <option value="married">Married</option>
+          </select>
+          <select
+            value={sortValue}
+            onChange={(e) => {
+              setSortValue(e.target.value);
+              setSearchValue("");
+            }}
+            name=""
+            id=""
+            className="teachers__sort__select"
+          >
+            <option value="asc">asc</option>
+            <option value="desc">desc</option>
           </select>
           <form
             className="search__teacher"
@@ -214,6 +243,11 @@ const Teacher = () => {
           showModal ? "nav__overlay show__nav-overlay" : "nav__overlay"
         }
       ></div>
+      {showModal ? (
+        <div onClick={() => setShowModal(false)} className="overlay"></div>
+      ) : (
+        <></>
+      )}
       {showModal && (
         <div className="teacher__modal">
           <h1
@@ -256,7 +290,11 @@ const Teacher = () => {
               placeholder="Enter last name"
               type="text"
             />
-            <input
+
+            <PatternFormat
+              format="+998 (##) ### ## ##"
+              allowEmptyFormatting
+              mask="_"
               value={newTeacher.phoneNumber}
               onChange={(e) =>
                 setNewTeacher((prev) => ({
@@ -267,6 +305,7 @@ const Teacher = () => {
               placeholder="Enter phone number"
               type="text"
             />
+
             <input
               value={newTeacher.email}
               onChange={(e) =>

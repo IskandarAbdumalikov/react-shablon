@@ -1,6 +1,7 @@
 import React from "react";
 import "./editTecher.scss";
 import axios from "axios";
+import { PatternFormat } from "react-number-format";
 
 const EditTeacher = ({ setEditData, data, setMaritalStatus }) => {
   function handleEditProduct(e) {
@@ -19,7 +20,7 @@ const EditTeacher = ({ setEditData, data, setMaritalStatus }) => {
       .then((res) => {
         setEditData(null);
         console.log(res);
-        setMaritalStatus("all")
+        setMaritalStatus("all");
       })
       .catch((err) => console.log(err));
   }
@@ -51,7 +52,10 @@ const EditTeacher = ({ setEditData, data, setMaritalStatus }) => {
           value={data.email}
           type="text"
         />
-        <input
+        <PatternFormat
+          format="+998 (##) ### ## ##"
+          allowEmptyFormatting
+          mask="_"
           required
           onChange={(e) =>
             setEditData((prev) => ({ ...prev, phoneNumber: e.target.value }))

@@ -1,9 +1,9 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import "./singlePages.scss";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-const SinglePage = () => {
+const StudentSingle = () => {
+  let { studentId } = useParams();
   let { id } = useParams();
   let [data, setData] = useState([]);
   let [loading, setLoading] = useState(true);
@@ -12,7 +12,9 @@ const SinglePage = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`https://6645a471b8925626f892813d.mockapi.io/school/teachers/${id}`)
+      .get(
+        `https://6645a471b8925626f892813d.mockapi.io/school/teachers/${id}/students/${studentId}`
+      )
       .then((res) => setData(res.data))
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
@@ -23,21 +25,11 @@ const SinglePage = () => {
         <img src={data.avatar} alt="" />
       </div>
       <div className="teacher__info">
-        <h1>
-          {data.firstName} {data.lastName}
-        </h1>
-
-        <h3>{data.email}</h3>
-        <h3>{data.phoneNumber}</h3>
-        <Link to={`/teachers/${data.id}/students`}>
-          <button>See students</button>
-        </Link>
-        <Link to={"/"}>
-          <button>Home</button>
-        </Link>
+        <h1>{data.name}</h1>
+        <p>{data.description}</p>
       </div>
     </div>
   );
 };
 
-export default SinglePage;
+export default StudentSingle;
